@@ -65,7 +65,8 @@ $(function () {
     let step = 0;
 
     let qState = new QuestionStorage();
-    console.log(qState.get3RandomQuestions());
+    let questions = qState.get3RandomQuestions();
+    console.log(questions);
 
     $("input").checkboxradio();
     $("fieldset").controlgroup();
@@ -86,6 +87,7 @@ $(function () {
             window.location.reload(true);
         }
 
+        $("#placeholder_question").text(questions[step].question);
         step++;
     });
     var progressbar = $("#progressbar");
@@ -111,6 +113,7 @@ $(function () {
     }
 
     function finish() {
+        $("#placeholder").hide();
         progressbar.progressbar("value", 0);
         $("#step-1").hide();
         $("#step-2").hide();
