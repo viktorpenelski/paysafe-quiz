@@ -36,7 +36,8 @@ class State {
         return this.questions.length+1 == this.step;
     }
 
-    persist() {
+    persist(email) {
+        this.jPrimerEmail = email;
         console.log(this);
     }
 }
@@ -111,8 +112,8 @@ $(function () {
     globalState = new State(questions);
     console.log(questions);
 
-    $("input").checkboxradio();
-    $("fieldset").controlgroup();
+    $("#placeholder input").checkboxradio();
+    $("#placeholder fieldset").controlgroup();
     $("button").button().click(function () {
         if (globalState.isStartStep()) {
             progress();
@@ -121,6 +122,7 @@ $(function () {
         } else if (globalState.isLastQuestion()) {
             finish(globalState);
         } else if (globalState.isEndStep()) {
+            globalState.persist($("#jPrimerEmail"));
             window.location.reload(true);
         }
 
@@ -169,6 +171,21 @@ $(function () {
         let correct = globalState.correctAnswers;
         $("#result").text(correct);
         $("#step-4").show();
+        attachEmptyOrValidListenerToSubmitBtn();
+    }
+
+    function attachEmptyOrValidListenerToSubmitBtn() {
+        // $("#jPrimerEmail")[0].validity.valid
+        let emailField = $("#jPrimerEmail");
+        emailField.on('keyup blur', () => {
+            console.log("changed!");
+            let valid = emailField[0].validity.valid;
+            if (emailField.val().length != 0 && !valid) {
+                $("#btn-submit-reset").prop("disabled", true);
+            } else {
+                $("#btn-submit-reset").prop("disabled", false);
+            }
+        });
     }
 
     progressbar.find(".ui-progressbar-value").css("background-color", "#66cc99");
