@@ -15,8 +15,20 @@ fieldset {
     width: 100%;
     top: 6px;
     font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
+    -webkit-text-stroke: 0.5px black;
+    color: white;
 }
 .section-content {
     margin: 10px;
+}
+pre {
+    tab-size: 4;
+    text-align: left;
+    white-space: pre-line;
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
