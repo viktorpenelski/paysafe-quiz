@@ -1,6 +1,71 @@
+class Question {
+    constructor(question, answers, correctAnswerId) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswerId = correctAnswerId;
+    }
+}
+
+class QuestionStorage {
+
+    constructor() {
+        this.q1 = new Question(
+            "first question test",
+            ["answer 1", "answer 2", "answer 3", "answer 4"],
+            2
+        );
+        this.q2 = new Question(
+            "sec question test",
+            ["answer 1", "answer 2", "answer 3", "answer 4"],
+            2
+        );
+        this.q3 = new Question(
+            "th question test",
+            ["answer 1", "answer 2", "answer 3", "answer 4"],
+            2
+        );
+        this.q4 = new Question(
+            "fourth question test",
+            ["answer 1", "answer 2", "answer 3", "answer 4"],
+            2
+        );
+        this.q5 = new Question(
+            "fifth question test",
+            ["answer 1", "answer 2", "answer 3", "answer 4"],
+            2
+        );
+
+
+        this.questions = [this.q1, this.q2, this.q3, this.q4, this.q5];
+    }
+
+    get3RandomQuestions() {
+        this._shuffle(this.questions);
+        return this.questions.slice(0, 3);
+    }
+
+    // Fisher-Yates / Knuth Shuffle.
+    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+    _shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+}
+
 $(function () {
 
     let step = 0;
+
+    let qState = new QuestionStorage();
+    console.log(qState.get3RandomQuestions());
 
     $("input").checkboxradio();
     $("fieldset").controlgroup();
@@ -58,10 +123,3 @@ $(function () {
     progressbar.find(".ui-progressbar-value").css("background-color", "#66cc99");
 });
 
-class Question {
-    constructor(question, answers, correctAnswerId) {
-        this.question = question;
-        this.answers = answers;
-        this.correctAnswerId = correctAnswerId;
-    }
-}
