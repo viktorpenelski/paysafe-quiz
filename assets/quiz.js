@@ -26,20 +26,21 @@ class State {
     }
 
     // The last question index is length of questions - 1
-    // the last questions' step is length of quesitons
-    isLastQuestion() {
+    // the last step is the one after the last question
+    isLastStep() {
         return this.questions.length == this.step;
     }
 
     // The "end" step is the one AFTER the lats question
-    isEndStep() {
+    shouldReset() {
         return this.questions.length+1 == this.step;
     }
 
     persistFor(email) {
         submitEntry({
             email: email,
-            questions: this.questions,
+            questionIds: this.questions.map(q => q.questionId),
+            answerIds: this.questions.map(q => q.providedAnswerId),
             correctAnswers: this.correctAnswers
         });
     }
@@ -52,7 +53,6 @@ $(function () {
     let qState = new QuestionRepository();
     let questions = qState.get3RandomQuestions();
     globalState = new State(questions);
-    console.log(questions);
 
     $("#placeholder input").checkboxradio();
     $("#placeholder fieldset").controlgroup();
@@ -61,15 +61,14 @@ $(function () {
             progress();
             $("#step-0").hide();
             $("#placeholder").show();
-        } else if (globalState.isLastQuestion()) {
+        } else if (globalState.isLastStep()) {
             finish(globalState);
-        } else if (globalState.isEndStep()) {
+        } else if (globalState.shouldReset()) {
             globalState.persistFor($("#jPrimerEmail").val());
             window.location.reload(true);
         }
 
         let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
-        console.log(answerId);
         if (globalState.step < 3) {
             $("#placeholder_question").html(questions[globalState.step].html);
             let fieldsetHtml = `<legend>Select an answer:</legend>`;
@@ -119,7 +118,6 @@ $(function () {
         // $("#jPrimerEmail")[0].validity.valid
         let emailField = $("#jPrimerEmail");
         emailField.on('keyup blur', () => {
-            console.log("changed!");
             let valid = emailField[0].validity.valid;
             if (emailField.val().length != 0 && !valid) {
                 $("#btn-submit-reset").prop("disabled", true);

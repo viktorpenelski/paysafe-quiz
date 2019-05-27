@@ -15,8 +15,9 @@ fieldset {
     width: 100%;
     top: 6px;
     font-weight: bold;
-    -webkit-text-stroke: 0.5px black;
-    color: white;
+    color: black;
+    text-shadow: 1px 1px white;
+    font-size: 120%;
 }
 .section-content {
     margin: 10px;
@@ -25,6 +26,10 @@ pre {
     tab-size: 4;
     text-align: left;
     white-space: pre-line;
+}
+
+code{
+    font-size: 150%;
 }
 
 .centered {

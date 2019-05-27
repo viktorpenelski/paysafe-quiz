@@ -1,8 +1,9 @@
 class Question {
-    constructor(html, answers, correctAnswerId) {
+    constructor(html, answers, correctAnswerId, questionId) {
         this.html = html;
         this.answers = answers;
         this.correctAnswerId = correctAnswerId;
+        this.questionId = questionId;
     }
 }
 
@@ -15,6 +16,7 @@ class QuestionRepository {
                 "No",
                 "Yes, but if the exception is a child of RuntimeException"
             ],
+            1,
             1
         );
         this.q2 = new Question(
@@ -34,6 +36,7 @@ System.out.println(result);
 </code></pre></div>
             `,
             ["22", "10", "12", "8"],
+            2,
             2
         );
         this.q3 = new Question(
@@ -50,7 +53,8 @@ t.run();
                 "main Thread-0 ",
                 "Thread-0 Thread-0 "
             ],
-            0
+            0,
+            3
         );
         this.q4 = new Question(
             "<h2>Which of the following is <b>incorrect</b> about <code>LinkedHashSet</code>:</h2>",
@@ -60,7 +64,8 @@ t.run();
                 "Elements can be iterated over",
                 "Elements are stored in the same order as they are inserted"
             ],
-            2
+            2,
+            4
         );
         this.q5 = new Question(
             `<h2>A butcher had a number of legs of lamb to chop up. 
@@ -72,10 +77,11 @@ t.run();
                 "99", 
                 "33"
             ],
-            2
+            2,5
+
         );
 
-        this.q5 = new Question(
+        this.q6 = new Question(
             `<h2>Amoebas reproduce by splitting in two. 
             An amoeba which does so every minute is placed in a jar at exactly ten o'clock in the morning. 
             At 12:00 noon the jar is full. At what time is the jar half full?</h2>`,
@@ -85,11 +91,12 @@ t.run();
                 "11:00", 
                 "10:01"
             ],
-            0
+            0,
+            6
         );
 
 
-        this.questions = [this.q1, this.q2, this.q3, this.q4, this.q5];
+        this.questions = [this.q1, this.q2, this.q3, this.q4, this.q5, this.q6];
     }
 
     get3RandomQuestions() {
