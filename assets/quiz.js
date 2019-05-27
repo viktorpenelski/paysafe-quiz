@@ -5,22 +5,23 @@ $(function () {
     $("input").checkboxradio();
     $("fieldset").controlgroup();
     $("button").button().click(function () {
-        var id = $(this).closest("div").attr("id");
-        if (id == "step-0") {
+        if (step == 0) {
             progress();
             $("#step-0").hide();
             $("#step-1").show();
-        } else if (id == "step-1") {
+        } else if (step == 1) {
             $("#step-1").hide();
             $("#step-2").show();
-        } else if (id == "step-2") {
+        } else if (step == 2) {
             $("#step-2").hide();
             $("#step-3").show();
-        } else if (id == "step-3") {
+        } else if (step == 3) {
             finish();
-        } else if (id == "step-4") {
-            window.location.reload();
+        } else if (step == 4) {
+            window.location.reload(true);
         }
+
+        step++;
     });
     var progressbar = $("#progressbar");
     var progressLabel = $(".progress-label");
