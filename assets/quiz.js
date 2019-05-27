@@ -1,3 +1,38 @@
+class State {
+    constructor(questions) {
+        this.step = 0;
+        this.correctAnswers = 0;
+        this.questions = questions;
+        this.jPrimerEmail = "";
+    }
+
+    provideAnswer(answerId) {
+        if (this.step <= 0 || this.step > this.questions.length) {
+            return;
+        }
+        this.questions[this.step - 1].providedAnswerId = answerId;
+        if (answerId == this.questions[this.step - 1].correctAnswerId) {
+            this.correctAnswers++;
+        }
+    }
+
+    next() {
+        this.step++;
+    }
+
+    isFirst() {
+        return this.step === 0;
+    }
+
+    isLast() {
+        return this.step === 4;
+    }
+
+    persist() {
+        console.log(this);
+    }
+}
+
 class Question {
     constructor(question, answers, correctAnswerId) {
         this.question = question;
@@ -6,8 +41,7 @@ class Question {
     }
 }
 
-class QuestionStorage {
-
+class QuestionRepository {
     constructor() {
         this.q1 = new Question(
             "first question test",
@@ -60,44 +94,50 @@ class QuestionStorage {
 
 }
 
+var globalState;
+
 $(function () {
 
-    let step = 0;
-
-    let qState = new QuestionStorage();
+    let qState = new QuestionRepository();
     let questions = qState.get3RandomQuestions();
+    globalState = new State(questions);
     console.log(questions);
 
     $("input").checkboxradio();
     $("fieldset").controlgroup();
     $("button").button().click(function () {
-        if (step == 0) {
+        if (globalState.isFirst()) {
             progress();
             $("#step-0").hide();
             $("#step-1").show();
-        } else if (step == 1) {
+        } else if (globalState.step == 1) {
             $("#step-1").hide();
             $("#step-2").show();
-        } else if (step == 2) {
+        } else if (globalState.step == 2) {
             $("#step-2").hide();
             $("#step-3").show();
-        } else if (step == 3) {
-            finish();
-        } else if (step == 4) {
+        } else if (globalState.step == 3) {
+            finish(globalState);
+        } else if (globalState.isLast()) {
             window.location.reload(true);
         }
 
-        if (step < 3) {
-            $("#placeholder_question").text(questions[step].question);
-            let fieldsetHtml = `<legend>Select an answer:</legend>`
-            questions[step].answers.forEach((answer, idx) => {
-                fieldsetHtml += `<input type="radio" name="radio-${step}" id="radio-${step}-${idx}">`
+
+        let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
+        console.log(answerId);
+        if (globalState.step < 3) {
+            $("#placeholder_question").text(questions[globalState.step].question);
+            let fieldsetHtml = `<legend>Select an answer:</legend>`;
+            questions[globalState.step].answers.forEach((answer, idx) => {
+                fieldsetHtml += `<input type="radio" name="radio-${globalState.step}" answerId="${idx}">`
                 fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
                 fieldsetHtml += `<br/>`
             });
             $("#placeholder_fieldset").html(fieldsetHtml);
         }
-        step++;
+        globalState.provideAnswer(answerId);
+        globalState.next();
+        globalState.persist();
 
     });
     var progressbar = $("#progressbar");
@@ -128,7 +168,7 @@ $(function () {
         $("#step-1").hide();
         $("#step-2").hide();
         $("#step-3").hide();
-        var correct = $("label[data-correct=true].ui-checkboxradio-checked").length;
+        let correct = globalState.correctAnswers;
         $("#result").text(correct);
         $("#step-4").show();
     }
