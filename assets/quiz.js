@@ -188,6 +188,6 @@ $(function () {
         });
     }
 
-    progressbar.find(".ui-progressbar-value").css("background-color", "#66cc99");
+    progressbar.find(".ui-progressbar-value").css("background-color", "#7887e6");
 });
 
