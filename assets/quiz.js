@@ -36,11 +36,15 @@ class State {
         return this.questions.length+1 == this.step;
     }
 
-    persist(email) {
-        this.jPrimerEmail = email;
-        console.log(this);
+    persistFor(email) {
+        submitEntry({
+            email: email,
+            questions: this.questions,
+            correctAnswers: this.correctAnswers
+        });
     }
 }
+
 
 class Question {
     constructor(question, answers, correctAnswerId) {
@@ -122,7 +126,7 @@ $(function () {
         } else if (globalState.isLastQuestion()) {
             finish(globalState);
         } else if (globalState.isEndStep()) {
-            globalState.persist($("#jPrimerEmail"));
+            globalState.persistFor($("#jPrimerEmail").val());
             window.location.reload(true);
         }
 
@@ -140,7 +144,6 @@ $(function () {
         }
         globalState.provideAnswer(answerId);
         globalState.next();
-        globalState.persist();
 
     });
     var progressbar = $("#progressbar");
