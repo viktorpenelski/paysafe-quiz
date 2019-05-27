@@ -87,8 +87,18 @@ $(function () {
             window.location.reload(true);
         }
 
-        $("#placeholder_question").text(questions[step].question);
+        if (step < 3) {
+            $("#placeholder_question").text(questions[step].question);
+            let fieldsetHtml = `<legend>Select an answer:</legend>`
+            questions[step].answers.forEach((answer, idx) => {
+                fieldsetHtml += `<input type="radio" name="radio-${step}" id="radio-${step}-${idx}">`
+                fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
+                fieldsetHtml += `<br/>`
+            });
+            $("#placeholder_fieldset").html(fieldsetHtml);
+        }
         step++;
+
     });
     var progressbar = $("#progressbar");
     var progressLabel = $(".progress-label");
@@ -113,8 +123,8 @@ $(function () {
     }
 
     function finish() {
-        $("#placeholder").hide();
         progressbar.progressbar("value", 0);
+        $("#placeholder").hide();
         $("#step-1").hide();
         $("#step-2").hide();
         $("#step-3").hide();
