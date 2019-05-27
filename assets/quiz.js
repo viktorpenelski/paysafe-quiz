@@ -20,12 +20,20 @@ class State {
         this.step++;
     }
 
-    isFirst() {
+    // We always start at 0
+    isStartStep() {
         return this.step === 0;
     }
 
-    isLast() {
-        return this.step === 4;
+    // The last question index is length of questions - 1
+    // the last questions' step is length of quesitons
+    isLastQuestion() {
+        return this.questions.length == this.step;
+    }
+
+    // The "end" step is the one AFTER the lats question
+    isEndStep() {
+        return this.questions.length+1 == this.step;
     }
 
     persist() {
@@ -106,22 +114,15 @@ $(function () {
     $("input").checkboxradio();
     $("fieldset").controlgroup();
     $("button").button().click(function () {
-        if (globalState.isFirst()) {
+        if (globalState.isStartStep()) {
             progress();
             $("#step-0").hide();
-            $("#step-1").show();
-        } else if (globalState.step == 1) {
-            $("#step-1").hide();
-            $("#step-2").show();
-        } else if (globalState.step == 2) {
-            $("#step-2").hide();
-            $("#step-3").show();
-        } else if (globalState.step == 3) {
+            $("#placeholder").show();
+        } else if (globalState.isLastQuestion()) {
             finish(globalState);
-        } else if (globalState.isLast()) {
+        } else if (globalState.isEndStep()) {
             window.location.reload(true);
         }
-
 
         let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
         console.log(answerId);
@@ -165,9 +166,6 @@ $(function () {
     function finish() {
         progressbar.progressbar("value", 0);
         $("#placeholder").hide();
-        $("#step-1").hide();
-        $("#step-2").hide();
-        $("#step-3").hide();
         let correct = globalState.correctAnswers;
         $("#result").text(correct);
         $("#step-4").show();
