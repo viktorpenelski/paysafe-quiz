@@ -8,17 +8,10 @@ function submitEntry(entry) {
     }
 
     function sendToLocalhostServer() {
-
-        // send "synchronously", because currently a window.refresh reloads the page, cutting off some requests.
-        // Once this is no longer the case, async can be used.
-        try {
-            $.post({
-                url: "http://localhost:6060/",
-                data: JSON.stringify(entry),
-                async: false
-            });
-        } catch (ignored) {
-        }
+        fetch("http://127.0.0.1:6060", {
+            method: "POST",
+            body: JSON.stringify(entry)
+        });
     }
 
     persistToLocalStore();
