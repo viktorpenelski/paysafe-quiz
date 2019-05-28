@@ -1,3 +1,5 @@
+@import "assets/bootstrap.css";
+
 body {
     font-family: Tahoma, Arial, Helvetica, sans-serif;
     color: #323746;
@@ -44,4 +46,19 @@ code{
     margin-left: auto;
     margin-right: auto;
     text-align: justify;
+}
+
+input[type=checkbox]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    transform: scale(2);
+    padding: 10px;
+}
+
+.form-row {
+    margin-bottom: 10px;
 }
