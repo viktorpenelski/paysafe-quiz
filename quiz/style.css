@@ -62,3 +62,27 @@ input[type=checkbox]
 .form-row {
     margin-bottom: 10px;
 }
+
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 22px;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
+
+.btn { 
+    color:#7786e5; 
+    font: old 84% 'trebuchet ms',helvetica,sans-serif; 
+    background-color:#ffff; 
+    border:2px solid; 
+    border-color: #7786e5; 
+}
+
+.btn:hover {
+    background-color: #7786e5;
+    border:2px solid;
+    border-color: #2d2341;
+    color:  white;
+  }
