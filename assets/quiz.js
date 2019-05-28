@@ -11,8 +11,8 @@ class State {
     }
 
     provideAnswer(answerId) {
-        this.questions[this.step-1].providedAnswerId = answerId;
-        if (answerId == this.questions[this.step-1].correctAnswerId) {
+        this.questions[this.step - 1].providedAnswerId = answerId;
+        if (answerId == this.questions[this.step - 1].correctAnswerId) {
             this.correctAnswers++;
         }
     }
@@ -42,6 +42,10 @@ class State {
         return this.questions.length + 1 == this.step;
     }
 
+    timedOut() {
+        this.step = this.questions.length + 1;
+    }
+
     persistFor(email) {
         submitEntry({
             email: email,
@@ -68,30 +72,14 @@ $(function () {
             $("#step-0").hide();
             $("#placeholder").show();
         } else if (globalState.isLastStep()) {
-            finish(globalState);
+            finish();
         } else if (globalState.shouldReset()) {
             globalState.persistFor($("#jPrimerEmail").val());
             window.location.reload(true);
         }
 
-        if (globalState.isQuestionStep()) {
-            let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
-            if (answerId) {
-                globalState.provideAnswer(answerId);
-            }
-
-            if (!globalState.isLastStep()) {
-                let q = globalState.getQuestion();
-                $("#placeholder_question").html(q.html);
-                let fieldsetHtml = `<legend>Select an answer:</legend>`;
-                q.answers.forEach((answer, idx) => {
-                    fieldsetHtml += `<input type="radio" name="radio-${globalState.step}" answerId="${idx}">`;
-                    fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
-                    fieldsetHtml += `<br/>`
-                });
-                $("#placeholder_fieldset").html(fieldsetHtml);
-            }            
-        }
+        visualizeQuestion();
+        scorePoints();
 
         globalState.next();
 
@@ -113,6 +101,8 @@ $(function () {
         if (val > 0) {
             setTimeout(progress, 1000);
         } else {
+            scorePoints();
+            globalState.timedOut();
             progressLabel.text("Result");
             finish();
         }
@@ -128,7 +118,6 @@ $(function () {
     }
 
     function attachEmptyOrValidListenerToSubmitBtn() {
-        // $("#jPrimerEmail")[0].validity.valid
         let emailField = $("#jPrimerEmail");
         emailField.on('keyup blur', () => {
             let valid = emailField[0].validity.valid;
@@ -142,4 +131,27 @@ $(function () {
 
     progressbar.find(".ui-progressbar-value").css("background-color", "#7887e6");
 });
+
+function visualizeQuestion() {
+    if (globalState.isQuestionStep() && !globalState.isLastStep()) {
+        let q = globalState.getQuestion();
+        $("#placeholder_question").html(q.html);
+        let fieldsetHtml = `<legend>Select an answer:</legend>`;
+        q.answers.forEach((answer, idx) => {
+            fieldsetHtml += `<input type="radio" name="radio-${globalState.step}" answerId="${idx}">`;
+            fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
+            fieldsetHtml += `<br/>`;
+        });
+        $("#placeholder_fieldset").html(fieldsetHtml);
+    }
+}
+
+function scorePoints() {
+    if (globalState.isQuestionStep()) {
+        let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
+        if (answerId) {
+            globalState.provideAnswer(answerId);
+        }
+    }
+}
 
