@@ -1,7 +1,5 @@
 function submitEntry(entry) {
 
-    const STORAGE_KEY = "persistedCandidates";
-
     function persistToLocalStore() {
         let existing = JSON.parse(localStorage.getItem(STORAGE_KEY));
         if (existing == null) existing = [];

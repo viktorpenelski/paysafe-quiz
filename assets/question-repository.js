@@ -64,7 +64,7 @@ t.run();
                 "Elements can be iterated over",
                 "Elements are stored in the same order as they are inserted"
             ],
-            2,
+            0,
             4
         );
         this.q5 = new Question(
@@ -77,8 +77,8 @@ t.run();
                 "99", 
                 "33"
             ],
-            2,5
-
+            2,
+            5
         );
 
         this.q6 = new Question(

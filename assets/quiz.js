@@ -1,9 +1,17 @@
 class State {
-    constructor(questions) {
+    constructor() {
         this.step = 0;
         this.correctAnswers = 0;
-        this.questions = questions;
+        this.questions = this._init();
         this.jPrimerEmail = "";
+    }
+
+    _init() {
+        $(".progress-label").text = `${TIME_IN_SECONDS} seconds`
+        let qState = new QuestionRepository();
+        let questions = qState.get3RandomQuestions();
+
+        return questions;
     }
 
     getQuestion() {
@@ -56,41 +64,40 @@ class State {
     }
 }
 
-var globalState;
+var globalState = new State();
 
 $(function () {
-
-    let qState = new QuestionRepository();
-    let questions = qState.get3RandomQuestions();
-    globalState = new State(questions);
-
-    $("#placeholder input").checkboxradio();
     $("#placeholder fieldset").controlgroup();
+    $("#placeholder input").checkboxradio("refresh");
     $("button").button().click(function () {
         if (globalState.isFirstStep()) {
             progress();
             $("#step-0").hide();
             $("#placeholder").show();
         } else if (globalState.isLastStep()) {
-            finish();
-        } else if (globalState.shouldReset()) {
-            globalState.persistFor($("#jPrimerEmail").val());
-            window.location.reload(true);
+            prepareLastScreen();
         }
 
-        visualizeQuestion();
         scorePoints();
+        visualizeQuestion();
 
-        globalState.next();
+        if (globalState.shouldReset()) {
+            globalState.persistFor($("#jPrimerEmail").val());
+            reset();
+            // window.location.reload(true);
+        } else {
+            globalState.next();
+        }
 
     });
+
     var progressbar = $("#progressbar");
     var progressLabel = $(".progress-label");
 
     progressbar.progressbar({
-        max: 90,
-        value: 90,
-        change: function () {
+        max: TIME_IN_SECONDS,
+        value: TIME_IN_SECONDS,
+        change: () => {
             progressLabel.text(progressbar.progressbar("value") + " seconds");
         }
     });
@@ -104,17 +111,26 @@ $(function () {
             scorePoints();
             globalState.timedOut();
             progressLabel.text("Result");
-            finish();
+            prepareLastScreen();
         }
     }
 
-    function finish() {
+    function prepareLastScreen() {
         progressbar.progressbar("value", 0);
         $("#placeholder").hide();
         let correct = globalState.correctAnswers;
         $("#result").text(correct);
         $("#step-4").show();
         attachEmptyOrValidListenerToSubmitBtn();
+    }
+
+    function reset() {
+        progressbar.progressbar("value", TIME_IN_SECONDS);
+        $("#step-4").hide();
+        $("#step-0").show();
+        $("#placeholder").hide();
+        $("#jPrimerEmail").val("");
+        globalState = new State();
     }
 
     function attachEmptyOrValidListenerToSubmitBtn() {
@@ -143,11 +159,12 @@ function visualizeQuestion() {
             fieldsetHtml += `<br/>`;
         });
         $("#placeholder_fieldset").html(fieldsetHtml);
+        
     }
 }
 
 function scorePoints() {
-    if (globalState.isQuestionStep()) {
+    if (globalState.isQuestionStep() && !globalState.isFirstStep()) {
         let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
         if (answerId) {
             globalState.provideAnswer(answerId);
