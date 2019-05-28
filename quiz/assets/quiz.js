@@ -3,7 +3,9 @@ class State {
         this.step = 0;
         this.correctAnswers = 0;
         this.questions = this._init();
-        this.jPrimerEmail = "";
+        this.email = "";
+        this.firstName = "";
+        this.lastName = "";
     }
 
     _init() {
@@ -54,11 +56,18 @@ class State {
         this.step = this.questions.length + 1;
     }
 
-    persistFor(email, firstName, lastName) {
+    persistFor(email, firstName, lastName, consent) {
+
+        if (consent) {
+            this.email = email;
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
         submitEntry({
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
             questionIds: this.questions.map(q => q.questionId),
             answerIds: this.questions.map(q => q.providedAnswerId),
             correctAnswers: this.correctAnswers
@@ -87,7 +96,8 @@ $(function () {
             let email = $("#jPrimerEmail").val();
             let firstName = $("#jPrimerFirstName").val();
             let lastName = $("#jPrimerLastName").val();
-            globalState.persistFor(email, firstName, lastName);
+            let consent = $("#jConsent").is(":checked");
+            globalState.persistFor(email, firstName, lastName, consent);
             reset();
             // window.location.reload(true);
         } else {
@@ -135,6 +145,9 @@ $(function () {
         $("#step-0").show();
         $("#placeholder").hide();
         $("#jPrimerEmail").val("");
+        $("#jPrimerFirstName").val("");
+        $("#jPrimerLastName").val("");
+        $("#jConsent").prop("checked", false);
         globalState = new State();
     }
 
