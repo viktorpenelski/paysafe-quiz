@@ -172,8 +172,8 @@ function visualizeQuestion() {
         let fieldsetHtml = `<legend>Select an answer:</legend>`;
         q.answers.forEach((answer, idx) => {
             fieldsetHtml += `<div class="form-check">`;
-            fieldsetHtml += `<input class="form-check-input" type="radio" name="radio-${globalState.step}" answerId="${idx}">`;
-            fieldsetHtml += `<label class="form-check-label" for="radio-${idx}">${answer}</label>`;
+            fieldsetHtml += `<input class="form-check-input" id="radio-${globalState.step}-${idx}" type="radio" name="radio-${globalState.step}" answerId="${idx}">`;
+            fieldsetHtml += `<label class="form-check-label" for="radio-${globalState.step}-${idx}">${answer}</label>`;
             fieldsetHtml += `</div>`;
         });
         $("#placeholder_fieldset").html(fieldsetHtml);
