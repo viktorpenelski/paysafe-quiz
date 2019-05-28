@@ -14,6 +14,7 @@ function submitEntry(entry) {
         });
     }
 
+    entry.submitDate = new Date();
     persistToLocalStore();
     sendToLocalhostServer();
 }
