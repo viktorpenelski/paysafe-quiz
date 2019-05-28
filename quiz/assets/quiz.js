@@ -12,7 +12,6 @@ class State {
         $(".progress-label").text = `${TIME_IN_SECONDS} seconds`
         let qState = new QuestionRepository();
         let questions = qState.get3RandomQuestions();
-
         return questions;
     }
 
@@ -76,6 +75,7 @@ class State {
 }
 
 var globalState = new State();
+attachEmptyOrValidListenerToStartBtn();
 
 $(function () {
     $("#placeholder fieldset").controlgroup();
@@ -136,7 +136,6 @@ $(function () {
         let correct = globalState.correctAnswers;
         $("#result").text(correct);
         $("#step-4").show();
-        attachEmptyOrValidListenerToSubmitBtn();
     }
 
     function reset() {
@@ -151,20 +150,20 @@ $(function () {
         globalState = new State();
     }
 
-    function attachEmptyOrValidListenerToSubmitBtn() {
-        let emailField = $("#jPrimerEmail");
-        emailField.on('keyup blur', () => {
-            let valid = emailField[0].validity.valid;
-            if (emailField.val().length != 0 && !valid) {
-                $("#btn-submit-reset").prop("disabled", true);
-            } else {
-                $("#btn-submit-reset").prop("disabled", false);
-            }
-        });
-    }
-
     progressbar.find(".ui-progressbar-value").css("background-color", "#7887e6");
 });
+
+function attachEmptyOrValidListenerToStartBtn() {
+    let emailField = $("#jPrimerEmail");
+    emailField.on('keyup blur', () => {
+        let valid = emailField[0].validity.valid;
+        if (emailField.val().length != 0 && !valid) {
+            $("#start-btn").prop("disabled", true);
+        } else {
+            $("#start-btn").prop("disabled", false);
+        }
+    });
+}
 
 function visualizeQuestion() {
     if (globalState.isQuestionStep() && !globalState.isLastStep()) {

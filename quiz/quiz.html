@@ -15,81 +15,99 @@
 </head>
 
 <body>
-<div style="height: 250px; background: #2d2341; width: 100%">
-  <img src="./assets/logo-white-bg.jpg" style="height: 150px; padding-left: 50px; padding-top: 50px;">
-  <p style="text-align:center; color: #fff; font-size: 72px; font-weight: bolder; margin-top: 0px;">Quiz</p>
-</div>
-<div id="progressbar">
-  <div class="progress-label" style="text-align: center;"></div>
-</div>
-<div id="placeholder" class="widget section-content" style="display: none; text-align: center">
-  <div id="placeholder_question"></div>
-  <fieldset id="placeholder_fieldset" style="text-align:left"></fieldset>
-  <br/>
-  <button>Next</button>
-</div>
-<div id="step-0" class="widget section-content" style="display: block; text-align: center">
-  <button style="margin-top: 100px;">Start</button>
-</div>
-<div id="step-4" class="widget section-content marginate" style="display: none; text-align: center">
-  <h2>Correct answers: <span id="result"></span> of 3</h2>
-  <div class="col-md-8 marginate">
-    <div class="form-row">
-      <label class="col-md-3" for="jPrimerFirstName">First Name: </label>
-      <input class="col form-control" type="text" autocomplete="off" id="jPrimerFirstName"/>
-    </div>
-    <div class="form-row">
-      <label class="col-md-3" for="jPrimerLastName">Last Name: </label>
-      <input class="col form-control" type="text" autocomplete="off" id="jPrimerLastName"/>
-    </div>
-    <div class="form-row">
-      <label class="col-md-3" for="jPrimerEmail">email: </label>
-      <input class="col form-control" type="email" autocomplete="off" id="jPrimerEmail"/>
-    </div>
+  <div style="height: 170px; background: #2d2341; width: 100%">
+    <table>
+      <tr>
+        <td>
+          <img src="./assets/logo-white-bg.jpg" style="height: 150px; padding-left: 50px; padding-top: 25px;">
+        </td>
+        <td>
+          <p style="text-align:center; color: #fff; font-size: 72px; font-weight: bolder; padding-left: 70%; margin-top: 25px;">Quiz</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="progressbar">
+    <div class="progress-label" style="text-align: center;"></div>
+  </div>
+  <div id="placeholder" class="widget section-content" style="display: none; text-align: center">
+    <div id="placeholder_question"></div>
+    <fieldset id="placeholder_fieldset" style="text-align:left"></fieldset>
+    <br />
+    <button>Next</button>
+  </div>
+  <div id="step-4" class="widget section-content marginate" style="display: none; text-align: center">
+    <h2>Thank you for playing!</h2>
+    <br />
+    <h2>Correct answers: <span id="result"></span> of 3</h2>
     <div class="marginate col-md-2" style="margin-bottom: 10px;">
       <button class="btn btn-success" id="btn-submit-reset">Submit / Reset</button>
     </div>
   </div>
-  <div class="row marginate">
-    <p>
-      I hereby give my consent to processing of my personal data for the following purposes
-      (tick the box for each purpose you agree with):
-    </p>
-  </div>
 
-  <br>
-  <div class="form-row marginate">
-    <div class="col-md-2">
-      <input class="marginate" type="checkbox" autocomplete="off" id="jConsent"/>
+  <div id="step-0" class="widget section-content marginate" style="display: block; text-align: center">
+    <div class="col-md-8 marginate">
+      <div class="form-row">
+        <label class="col-md-3" for="jPrimerFirstName">First Name: </label>
+        <input class="col form-control" type="text" autocomplete="off" id="jPrimerFirstName" />
+      </div>
+      <div class="form-row">
+        <label class="col-md-3" for="jPrimerLastName">Last Name: </label>
+        <input class="col form-control" type="text" autocomplete="off" id="jPrimerLastName" />
+      </div>
+      <div class="form-row">
+        <label class="col-md-3" for="jPrimerEmail">email: </label>
+        <input class="col form-control" type="email" autocomplete="off" id="jPrimerEmail" />
+      </div>
     </div>
-    <div class="col-md-10">
+    <br />
+    <div class="row marginate">
       <p>
-        For the purpose of receiving information about
-        Paysafe’s open / future job vacancies as well as additional
-        information about the company (no offers or advertisement materials of Paysafe products or services will be
-        sent).
+        I hereby give my consent to processing of my personal data for the following purposes
+        (tick the box for each purpose you agree with):
       </p>
     </div>
+
+    <br>
+    <div class="row marginate">
+      <div class="col-md-2">
+        <input class="marginate" type="checkbox" autocomplete="off" id="jConsent" />
+      </div>
+      <div class="col-md-10">
+        <p>
+          For the purpose of receiving information about
+          Paysafe’s open / future job vacancies as well as additional
+          information about the company (no offers or advertisement materials of Paysafe products or services will be
+          sent).
+        </p>
+      </div>
+      <div class="row col-md-8 marginate">
+        <button id="start-btn" class="btn btn-primary btn-lg">Start</button>
+      </div>
+    </div>
+
+    <br />
+    <br /> <br />
+    <span>
+      <i>Providing your personal information is <b>optional</b>. </i>
+    </span>
+    <br />
+    <br />
+    <span>
+      <i>
+        By providing your email, you agree for it to be collected by Paysafe.
+        In case you want to opt-out of this at a later point in time,
+        you can do so via an email to RecruitmentSofia@paysafe.com from the provided email with subject
+        "JPrime2019 email consent withdrawal".
+      </i>
+    </span>
+    <br />
+    <span>
+      You can familiarize yourself with the Terms&Conditions on the
+      <a href="./terms-and-conditions.html">following link</a>
+    </span>
   </div>
-  <br/> <br/>
-  <span>
-            <i>Providing your personal information is <b>optional</b>. </i>
-        </span>
-  <br/>
-  <br/>
-  <span>
-    <i>
-            By providing your email, you agree for it to be collected by Paysafe.
-            In case you want to opt-out of this at a later point in time,
-            you can do so via an email to RecruitmentSofia@paysafe.com from the provided email with subject
-            "JPrime2019 email consent withdrawal".
-        </i>
-  </span>
-  <br/>
-  <span>
-            You can familiarize yourself with the Terms&Conditions on the <a href="./terms-and-conditions.html">following link</a>
-        </span>
-</div>
+  </div>
 </body>
 
 </html>
