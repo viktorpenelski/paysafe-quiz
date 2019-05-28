@@ -54,9 +54,11 @@ class State {
         this.step = this.questions.length + 1;
     }
 
-    persistFor(email) {
+    persistFor(email, firstName, lastName) {
         submitEntry({
             email: email,
+            firstName: firstName,
+            lastName: lastName,
             questionIds: this.questions.map(q => q.questionId),
             answerIds: this.questions.map(q => q.providedAnswerId),
             correctAnswers: this.correctAnswers
@@ -82,7 +84,10 @@ $(function () {
         visualizeQuestion();
 
         if (globalState.shouldReset()) {
-            globalState.persistFor($("#jPrimerEmail").val());
+            let email = $("#jPrimerEmail").val();
+            let firstName = $("#jPrimerFirstName").val();
+            let lastName = $("#jPrimerLastName").val();
+            globalState.persistFor(email, firstName, lastName);
             reset();
             // window.location.reload(true);
         } else {
