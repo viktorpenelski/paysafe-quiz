@@ -6,23 +6,29 @@ class State {
         this.jPrimerEmail = "";
     }
 
+    getQuestion() {
+        return this.questions[this.step];
+    }
+
     provideAnswer(answerId) {
-        if (this.step <= 0 || this.step > this.questions.length) {
-            return;
-        }
-        this.questions[this.step - 1].providedAnswerId = answerId;
-        if (answerId == this.questions[this.step - 1].correctAnswerId) {
+        this.questions[this.step-1].providedAnswerId = answerId;
+        if (answerId == this.questions[this.step-1].correctAnswerId) {
             this.correctAnswers++;
         }
     }
 
+    isFirstStep() {
+        return this.step == 0;
+    }
+
     next() {
+        if (this._startStep)
+            this._startStep = false;
         this.step++;
     }
 
-    // We always start at 0
-    isStartStep() {
-        return this.step === 0;
+    isQuestionStep() {
+        return this.step >= 0 && this.step <= this.questions.length;
     }
 
     // The last question index is length of questions - 1
@@ -33,7 +39,7 @@ class State {
 
     // The "end" step is the one AFTER the lats question
     shouldReset() {
-        return this.questions.length+1 == this.step;
+        return this.questions.length + 1 == this.step;
     }
 
     persistFor(email) {
@@ -57,7 +63,7 @@ $(function () {
     $("#placeholder input").checkboxradio();
     $("#placeholder fieldset").controlgroup();
     $("button").button().click(function () {
-        if (globalState.isStartStep()) {
+        if (globalState.isFirstStep()) {
             progress();
             $("#step-0").hide();
             $("#placeholder").show();
@@ -68,18 +74,25 @@ $(function () {
             window.location.reload(true);
         }
 
-        let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
-        if (globalState.step < 3) {
-            $("#placeholder_question").html(questions[globalState.step].html);
-            let fieldsetHtml = `<legend>Select an answer:</legend>`;
-            questions[globalState.step].answers.forEach((answer, idx) => {
-                fieldsetHtml += `<input type="radio" name="radio-${globalState.step}" answerId="${idx}">`
-                fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
-                fieldsetHtml += `<br/>`
-            });
-            $("#placeholder_fieldset").html(fieldsetHtml);
+        if (globalState.isQuestionStep()) {
+            let answerId = $("#placeholder_fieldset input[type='radio']:checked").attr("answerId");
+            if (answerId) {
+                globalState.provideAnswer(answerId);
+            }
+
+            if (!globalState.isLastStep()) {
+                let q = globalState.getQuestion();
+                $("#placeholder_question").html(q.html);
+                let fieldsetHtml = `<legend>Select an answer:</legend>`;
+                q.answers.forEach((answer, idx) => {
+                    fieldsetHtml += `<input type="radio" name="radio-${globalState.step}" answerId="${idx}">`;
+                    fieldsetHtml += `<label for="radio-${idx}">${answer}</label>`;
+                    fieldsetHtml += `<br/>`
+                });
+                $("#placeholder_fieldset").html(fieldsetHtml);
+            }            
         }
-        globalState.provideAnswer(answerId);
+
         globalState.next();
 
     });

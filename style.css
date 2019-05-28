@@ -15,8 +15,8 @@ fieldset {
     width: 100%;
     top: 6px;
     font-weight: bold;
-    color: black;
-    text-shadow: 1px 1px white;
+    color: #ff5073;
+    text-shadow: 0.5px 0.5px black;
     font-size: 120%;
 }
 .section-content {
